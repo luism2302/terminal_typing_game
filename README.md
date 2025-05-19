@@ -7,6 +7,7 @@ See how many words you can type in a minute. Using the PyGame library, it displa
 ## Installation
 ### 1. Clone this repo
 ```git clone https://github.com/luism2302/typing_game.git```
+
 ```cd typing_game```
 ### 2. Run using:
 `python3 main.py`
