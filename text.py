@@ -18,15 +18,6 @@ def display_text(display: pygame.Surface, size: int, text: str, position: tuple,
 
 	display.blit(rendered_text, pos_text)
 
-def handle_initial_input(key_pressed: str):
-	match key_pressed.lower():
-		case 'n':
-			return -1
-		case 'y':
-			return 1
-		case _:
-			return 0
-
 def handle_word_input(curr_typed_word: str, inp: str):
 	if inp == "\x08":
 		if curr_typed_word == "":

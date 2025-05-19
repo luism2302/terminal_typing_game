@@ -1,5 +1,5 @@
 import pygame
-from text import display_text, handle_initial_input, choose_word, check_typed_word, handle_word_input
+from text import display_text, choose_word, check_typed_word, handle_word_input
 from button import Button
 
 def main():
