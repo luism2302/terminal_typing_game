@@ -2,71 +2,46 @@ import sys
 import time
 import pygame
 import random
-
-all_words = []
-with open("words.txt", "r") as f:
-    for line in f:
-        all_words.append(line.strip())
-
+from text import display_text, handle_initial_input
 
 def main():
+    #Initialize some pygame variables
     pygame.init()
     screen = pygame.display.set_mode((800,800))
     clock = pygame.time.Clock()
-    running = True
+    pygame.event.set_blocked([pygame.MOUSEMOTION])
     font = pygame.font.Font(None, 40)
-    #Welcome message
-    welcome_txt = font.render("Welcome to my typing game", True, (255,255,255))
-    welcome_pos = welcome_txt.get_rect(x = 10, y = 20)
-    #Start the game input
-    start_y = font.render("(Y) Start", True ,(255,255,255))
-    start_y_pos = start_y.get_rect(x = 10, y = 80)
-    start_n = font.render("(N) Quit", True ,(255,255,255))
-    start_n_pos = start_n.get_rect(x = 10, y = 120)
-    #Variables for the different stages of the game
+    running = True
+    #Variables for logica and stuff
     stage = 0
     countdown_nums = [3,2,1]
     start_countdown = None
-    chosen_word = None
-    typed_word = ""
 
     while running:
         screen.fill("black")
         for event in pygame.event.get():
-            print(event)
             match event.type:
                 case pygame.QUIT:
-                    running = False
-                case pygame.TEXTINPUT:
+                    running = False 
+                case pygame.KEYDOWN:
                     if stage == 0:
-                        match event.text:
-                            case "y":
-                                stage += 1
-                                start_countdown = pygame.time.get_ticks()
-                            case "n":
-                                running = False
-                    if stage == 2:
-                        pass
-        if stage == 0: 
-            screen.blit(welcome_txt, welcome_pos)
-            screen.blit(start_y, start_y_pos)
-            screen.blit(start_n, start_n_pos)
+                        stage = handle_initial_input(event.unicode)
+                        start_countdown = pygame.time.get_ticks()
 
+        if stage == 0: 
+            display_text(screen, font, "Welcome to my typing game!", (10,20))
+            display_text(screen, font, "(Y) Start", (10,80))
+            display_text(screen, font, "(N) Quit", (10,120))
         elif stage == 1:
             elapsed = (pygame.time.get_ticks() - start_countdown) // 1000 
             if elapsed < len(countdown_nums):
                 if elapsed == 0:
-                    get_ready_txt1 = font.render(f"Get ready! The first word will appear in ...{countdown_nums[elapsed]}", True ,(255,255,255))
+                    display_text(screen, font, f"Get ready! The first word will appear in ...{countdown_nums[elapsed]}", (10,20))
                 else:
-                    get_ready_txt1 = font.render(f"...{countdown_nums[elapsed]}", True ,(255,255,255))
-                get_ready_txt1_pos = welcome_txt.get_rect(x = 10, y = elapsed)
-                screen.blit(get_ready_txt1 , get_ready_txt1_pos)
-            else:
-                stage += 1
-        elif stage == 2:
-            if chosen_word is None or typed_word == chosen_word:
-                chosen_word = random.choice(all_words)
+                    display_text(screen, font, f"...{countdown_nums[elapsed]}", (10,20))
 
+        if stage == -1:
+            running = False
         pygame.display.flip()
         clock.tick(60)
 
