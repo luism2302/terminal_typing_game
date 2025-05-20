@@ -10,7 +10,8 @@ See how many words you can type in a minute. Using the PyGame library, it displa
 
 ```cd typing_game```
 ### 2. Run using:
-`python3 main.py`
-
+```python3 main.py```
+Or:
+```python main.py```
 
 
